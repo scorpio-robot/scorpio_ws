@@ -1,0 +1,40 @@
+repositories:
+  third-party/sdformat_tools:
+    type: git
+    url: https://github.com/gezp/sdformat_tools.git
+    version: galactic
+
+  third-party/rgl_gazebo_plugin:
+    type: git
+    url: https://github.com/LihanChen2004/rgl_gazebo_plugin.git
+    version: dev/fortress/add_timestamp_field
+
+  drivers/ydlidar_ros2_driver:
+    type: git
+    url: https://github.com/YDLIDAR/ydlidar_ros2_driver.git
+    version: humble
+
+  drivers/mid360_driver:
+    type: git
+    url: https://github.com/Yancey2023/mid360_driver.git
+    version: main
+
+  drivers/scorpio_base:
+    type: git
+    url: https://github.com/scorpio-robot/scorpio_base.git
+    version: main
+
+  applications/scorpio_description:
+    type: git
+    url: https://github.com/scorpio-robot/scorpio_description.git
+    version: main
+
+  applications/scorpio_simulator:
+    type: git
+    url: https://github.com/scorpio-robot/scorpio_simulator.git
+    version: main
+
+  applications/scorpio_nav2_bringup:
+    type: git
+    url: https://github.com/scorpio-robot/scorpio_nav2_bringup.git
+    version: main
