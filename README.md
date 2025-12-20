@@ -55,7 +55,7 @@ cd scorpio_ws
 
 ### 2.3 Running
 
-启动仿真环境
+如启动仿真环境，请先取消注释 [dependencies.repos](dependencies.repos) 中的 `scorpio_simulator` 和 `rgl_gazebo_plugin` 部分，然后再次运行 `./setup.sh`, `./build.sh`
 
 ```sh
 ros2 launch rmu_gazebo_simulator bringup_sim.launch.py
