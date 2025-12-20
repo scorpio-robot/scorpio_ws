@@ -300,7 +300,7 @@ Visualization Manager:
           Enabled: true
           Invert Rainbow: false
           Max Color: 255; 255; 255
-          Max Intensity: 158
+          Max Intensity: 154
           Min Color: 0; 0; 0
           Min Intensity: 0
           Name: mid360
@@ -315,7 +315,7 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /livox/lidar/pointcloud
+            Value: /livox/lidar
           Use Fixed Frame: true
           Use rainbow: true
           Value: true
@@ -750,7 +750,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 5.119840621948242
+      Distance: 5.555196762084961
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -768,7 +768,7 @@ Visualization Manager:
       Pitch: 0.7947969436645508
       Target Frame: base_link
       Value: Orbit (rviz_default_plugins)
-      Yaw: 3.14
+      Yaw: 3.140000104904175
     Saved: ~
 Window Geometry:
   Camera:
