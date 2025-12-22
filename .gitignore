@@ -4,3 +4,4 @@ log/*
 
 site/*
 .cache
+tmp
