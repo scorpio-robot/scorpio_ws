@@ -50,6 +50,23 @@ mid360_driver:
     host_ip: 192.168.1.50
     is_topic_name_with_lidar_ip: false
 
+teleop_twist_joy:
+  ros__parameters:
+    axis_linear:  # Left thumb stick vertical
+      x: 1
+    scale_linear:
+      x: 0.7
+    scale_linear_turbo:
+      x: 1.0
+
+    axis_angular:  # Left thumb stick horizontal
+      yaw: 3
+    scale_angular:
+      yaw: 3.0
+
+    enable_button: 4  # Left trigger button
+    enable_turbo_button: 5  # Right trigger button
+
 amcl:
   ros__parameters:
     use_sim_time: True
