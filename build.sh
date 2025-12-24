@@ -8,4 +8,5 @@ colcon build \
   --merge-install \
   --symlink-install \
   --cmake-args "-DCMAKE_BUILD_TYPE=$BUILD_TYPE" \
-  --parallel-workers 10
+  --parallel-workers 10 \
+  --packages-up-to loam_interface

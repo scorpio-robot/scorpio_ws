@@ -43,3 +43,8 @@ repositories:
     type: git
     url: https://github.com/scorpio-robot/plain_slam_ros2.git
     version: main
+
+  applications/scorpio_navigation:
+    type: git
+    url: https://github.com/scorpio-robot/scorpio_navigation.git
+    version: main
