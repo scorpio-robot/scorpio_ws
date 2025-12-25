@@ -11,8 +11,9 @@
 
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>nav2_common</exec_depend>
-  <exec_depend>scorpio_base</exec_depend>
   <exec_depend>mid360_driver</exec_depend>
+  <exec_depend>scorpio_base</exec_depend>
+	<exec_depend>scorpio_description</exec_depend>
   <exec_depend>scorpio_nav2_bringup</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>

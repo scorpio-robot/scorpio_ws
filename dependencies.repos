@@ -39,11 +39,6 @@ repositories:
     url: https://github.com/scorpio-robot/scorpio_nav2_bringup.git
     version: main
 
-  applications/plain_slam_ros2:
-    type: git
-    url: https://github.com/scorpio-robot/plain_slam_ros2.git
-    version: main
-
   applications/scorpio_navigation:
     type: git
     url: https://github.com/scorpio-robot/scorpio_navigation.git
