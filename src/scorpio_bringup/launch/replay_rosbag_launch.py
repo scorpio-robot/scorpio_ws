@@ -16,7 +16,11 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import (
+    DeclareLaunchArgument,
+    ExecuteProcess,
+    IncludeLaunchDescription,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 
@@ -78,6 +82,17 @@ def generate_launch_description():
         }.items(),
     )
 
+    replay_rosbag_cmd = ExecuteProcess(
+        cmd=[
+            "ros2",
+            "bag",
+            "play",
+            "rosbags/real_car_20251224_210108",
+            "--clock",
+            "-r 1.0",
+        ],
+        output="screen",
+    )
     ld = LaunchDescription()
 
     # Declare the launch options
@@ -90,5 +105,6 @@ def generate_launch_description():
 
     # Running Map Saver Server
     ld.add_action(bringup_robot_description_cmd)
+    ld.add_action(replay_rosbag_cmd)
 
     return ld
