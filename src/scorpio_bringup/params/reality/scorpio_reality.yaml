@@ -64,6 +64,7 @@ teleop_twist_joy:
     scale_angular:
       yaw: 3.0
 
+    require_enable_button: False
     enable_button: 4  # Left trigger button
     enable_turbo_button: 5  # Right trigger button
 
