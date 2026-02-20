@@ -1,4 +1,4 @@
-FROM osrf/ros:humble-desktop-full
+FROM osrf/ros:jazzy-desktop-full
 
 # Change apt sources to USTC mirror for faster downloads in China
 # Support both traditional format (Ubuntu 22.04 and earlier) and DEB822 format (Ubuntu 24.04+)

@@ -8,7 +8,7 @@ scorpio_workspace 是天蝎座机器人的上位机 ROS 工作空间，包含仿
 
 ### 2.1 Setup Environment
 
-Ubuntu 22.04: [ROS2 Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
+Ubuntu 24.04: [ROS2 Jazzy](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html)
 
 > [!NOTE]
 > 由于使用了 RGLGazeboPlugin 用于仿真 mid360 点云,仿真包仅可运行在带 Nvidia GPU 的电脑
@@ -61,9 +61,6 @@ cd scorpio_ws
 ros2 launch rmu_gazebo_simulator bringup_sim.launch.py
 ```
 
-> [!NOTE]
-> **注意：需要点击 Gazebo 左下角橙红色的 `启动` 按钮**
-
 启动实车
 
 ```sh
@@ -73,7 +70,7 @@ ros2 launch scorpio_bringup bringup_hardware_launch.py
 控制机器人移动
 
 ```sh
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p stamped:=true
 ```
 
 ## 维护者及开源许可证
