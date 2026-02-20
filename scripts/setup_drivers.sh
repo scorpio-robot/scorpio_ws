@@ -18,9 +18,61 @@ echo "================================================================"
 echo ""
 
 # ============================================================
-# 1. Intel RealSense SDK 2.0
+# 1. Sophus
 # ============================================================
-echo "[1/4] 安装 Intel RealSense SDK 2.0..."
+echo "[1/6] 安装 Sophus..."
+
+SOPHUS_DIR="$HOME/Programs/Sophus"
+
+if [ -d "$SOPHUS_DIR" ]; then
+    echo "  -> Sophus 目录已存在,跳过 clone"
+else
+    echo "  -> Clone Sophus..."
+    mkdir -p ~/Programs
+    git clone https://github.com/strasdat/Sophus.git -b 1.24.6 --depth=1 "$SOPHUS_DIR"
+fi
+
+echo "  -> 编译并安装 Sophus..."
+cd "$SOPHUS_DIR"
+mkdir -p build
+cd build
+cmake ..
+make -j10
+sudo make install
+
+echo -e "\e[32m✓ Sophus 安装完成\e[0m"
+echo ""
+
+# ============================================================
+# 2. nanoflann
+# ============================================================
+echo "[2/6] 安装 nanoflann..."
+
+NANOFLANN_DIR="$HOME/Programs/nanoflann"
+
+if [ -d "$NANOFLANN_DIR" ]; then
+    echo "  -> nanoflann 目录已存在,跳过 clone"
+else
+    echo "  -> Clone nanoflann..."
+    mkdir -p ~/Programs
+    git clone https://github.com/jlblancoc/nanoflann.git -b v1.9.0 --depth=1 "$NANOFLANN_DIR"
+fi
+
+echo "  -> 编译并安装 nanoflann..."
+cd "$NANOFLANN_DIR"
+mkdir -p build
+cd build
+cmake ..
+make -j10
+sudo make install
+
+echo -e "\e[32m✓ nanoflann 安装完成\e[0m"
+echo ""
+
+# ============================================================
+# 3. Intel RealSense SDK 2.0
+# ============================================================
+echo "[3/6] 安装 Intel RealSense SDK 2.0..."
 
 echo "  -> 注册 RealSense GPG 密钥..."
 sudo mkdir -p /etc/apt/keyrings
@@ -43,7 +95,7 @@ echo ""
 # ============================================================
 # 2. YDLidar SDK
 # ============================================================
-echo "[2/4] 安装 YDLidar SDK..."
+echo "[4/6] 安装 YDLidar SDK..."
 
 YDLIDAR_DIR="$HOME/Programs/YDLidar-SDK"
 
@@ -69,7 +121,7 @@ echo ""
 # ============================================================
 # 3. YDLidar udev 规则
 # ============================================================
-echo "[3/4] 配置 YDLidar udev 规则..."
+echo "[5/6] 配置 YDLidar udev 规则..."
 
 UDEV_RULES=(
     "/etc/udev/rules.d/99-ydlidar.rules:KERNEL==\"ttyUSB*\", ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"ea60\", MODE:=\"0666\", GROUP:=\"dialout\", SYMLINK+=\"ydlidar\""
