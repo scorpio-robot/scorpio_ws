@@ -4,152 +4,109 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PROGRAMS_DIR="$HOME/Programs"
+JOBS=$(nproc)
 
+# ── 工具函数 ─────────────────────────────────────────────────
+ok()  { echo -e "\e[32m✓ $1\e[0m"; echo ""; }
+log() { echo "  -> $1"; }
+section() { echo "[$1] $2"; }
+
+# 通用 cmake 库安装：clone（可选）+ cmake build + sudo make install
+cmake_install() {
+    local name="$1"
+    local dir="$2"
+    local clone_cmd="$3"   # 若为空则跳过 clone
+
+    if [ -n "$clone_cmd" ]; then
+        if [ -d "$dir" ]; then
+            log "$name 目录已存在,跳过 clone"
+        else
+            log "Clone $name..."
+            mkdir -p "$PROGRAMS_DIR"
+            eval "$clone_cmd"
+        fi
+    fi
+
+    log "编译并安装 $name..."
+    cmake -S "$dir" -B "$dir/build"
+    cmake --build "$dir/build" -j"$JOBS"
+    sudo cmake --install "$dir/build"
+}
+
+# ─────────────────────────────────────────────────────────────
 echo "================================================================"
 echo "Scorpio 依赖自动安装脚本"
 echo "================================================================"
 echo "本脚本将自动安装:"
-echo "  1. Intel RealSense SDK 2.0 + ROS2 Wrapper"
-echo "  2. YDLidar SDK"
-echo "  3. YDLidar udev 规则"
+echo "  1. Sophus"
+echo "  2. nanoflann"
+echo "  3. Intel RealSense SDK 2.0 + ROS2 Wrapper"
+echo "  4. YDLidar SDK"
+echo "  5. YDLidar udev 规则"
 echo ""
 echo "需要 sudo 权限,请准备输入密码。"
 echo "================================================================"
 echo ""
 
 # ============================================================
-# 1. Sophus
-# ============================================================
-echo "[1/6] 安装 Sophus..."
-
-SOPHUS_DIR="$HOME/Programs/Sophus"
-
-if [ -d "$SOPHUS_DIR" ]; then
-    echo "  -> Sophus 目录已存在,跳过 clone"
-else
-    echo "  -> Clone Sophus..."
-    mkdir -p ~/Programs
-    git clone https://github.com/strasdat/Sophus.git -b 1.24.6 --depth=1 "$SOPHUS_DIR"
-fi
-
-echo "  -> 编译并安装 Sophus..."
-cd "$SOPHUS_DIR"
-mkdir -p build
-cd build
-cmake ..
-make -j10
-sudo make install
-
-echo -e "\e[32m✓ Sophus 安装完成\e[0m"
-echo ""
+section "1/5" "安装 Sophus..."
+cmake_install "Sophus" "$PROGRAMS_DIR/Sophus" \
+    "git clone https://github.com/strasdat/Sophus.git -b 1.24.6 --depth=1 \"$PROGRAMS_DIR/Sophus\""
+ok "Sophus 安装完成"
 
 # ============================================================
-# 2. nanoflann
-# ============================================================
-echo "[2/6] 安装 nanoflann..."
-
-NANOFLANN_DIR="$HOME/Programs/nanoflann"
-
-if [ -d "$NANOFLANN_DIR" ]; then
-    echo "  -> nanoflann 目录已存在,跳过 clone"
-else
-    echo "  -> Clone nanoflann..."
-    mkdir -p ~/Programs
-    git clone https://github.com/jlblancoc/nanoflann.git -b v1.9.0 --depth=1 "$NANOFLANN_DIR"
-fi
-
-echo "  -> 编译并安装 nanoflann..."
-cd "$NANOFLANN_DIR"
-mkdir -p build
-cd build
-cmake ..
-make -j10
-sudo make install
-
-echo -e "\e[32m✓ nanoflann 安装完成\e[0m"
-echo ""
+section "2/5" "安装 nanoflann..."
+cmake_install "nanoflann" "$PROGRAMS_DIR/nanoflann" \
+    "git clone https://github.com/jlblancoc/nanoflann.git -b v1.9.0 --depth=1 \"$PROGRAMS_DIR/nanoflann\""
+ok "nanoflann 安装完成"
 
 # ============================================================
-# 3. Intel RealSense SDK 2.0
-# ============================================================
-echo "[3/6] 安装 Intel RealSense SDK 2.0..."
+section "3/5" "安装 Intel RealSense SDK 2.0..."
 
-echo "  -> 注册 RealSense GPG 密钥..."
+log "注册 RealSense GPG 密钥..."
 sudo mkdir -p /etc/apt/keyrings
-curl -sSf https://librealsense.intel.com/Debian/librealsense.pgp | sudo tee /etc/apt/keyrings/librealsense.pgp > /dev/null
+curl -sSf https://librealsense.intel.com/Debian/librealsense.pgp \
+    | sudo tee /etc/apt/keyrings/librealsense.pgp > /dev/null
 
-echo "  -> 添加 RealSense 软件源..."
-echo "deb [signed-by=/etc/apt/keyrings/librealsense.pgp] https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" | \
-sudo tee /etc/apt/sources.list.d/librealsense.list
+log "添加 RealSense 软件源..."
+echo "deb [signed-by=/etc/apt/keyrings/librealsense.pgp] https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" \
+    | sudo tee /etc/apt/sources.list.d/librealsense.list
 sudo apt-get update
 
-echo "  -> 安装 librealsense2..."
-sudo apt-get install -y librealsense2-dkms librealsense2-utils
+log "安装 librealsense2 + ROS2 Wrapper..."
+sudo apt-get install -y librealsense2-dkms librealsense2-utils ros-$ROS_DISTRO-realsense2-*
 
-echo "  -> 安装 ROS2 RealSense Wrapper..."
-sudo apt-get install -y ros-$ROS_DISTRO-realsense2-*
-
-echo -e "\e[32m✓ RealSense SDK 安装完成\e[0m"
-echo ""
+ok "RealSense SDK 安装完成"
 
 # ============================================================
-# 2. YDLidar SDK
-# ============================================================
-echo "[4/6] 安装 YDLidar SDK..."
-
-YDLIDAR_DIR="$HOME/Programs/YDLidar-SDK"
-
-if [ -d "$YDLIDAR_DIR" ]; then
-    echo "  -> YDLidar-SDK 目录已存在,跳过 clone"
-else
-    echo "  -> Clone YDLidar-SDK..."
-    mkdir -p ~/Programs
-    git clone https://github.com/YDLIDAR/YDLidar-SDK.git "$YDLIDAR_DIR"
-fi
-
-echo "  -> 编译并安装 YDLidar-SDK..."
-cd "$YDLIDAR_DIR"
-mkdir -p build
-cd build
-cmake ..
-make
-sudo make install
-
-echo -e "\e[32m✓ YDLidar SDK 安装完成\e[0m"
-echo ""
+section "4/5" "安装 YDLidar SDK..."
+cmake_install "YDLidar-SDK" "$PROGRAMS_DIR/YDLidar-SDK" \
+    "git clone https://github.com/YDLIDAR/YDLidar-SDK.git \"$PROGRAMS_DIR/YDLidar-SDK\""
+ok "YDLidar SDK 安装完成"
 
 # ============================================================
-# 3. YDLidar udev 规则
-# ============================================================
-echo "[5/6] 配置 YDLidar udev 规则..."
+section "5/5" "配置 YDLidar udev 规则..."
 
-UDEV_RULES=(
-    "/etc/udev/rules.d/99-ydlidar.rules:KERNEL==\"ttyUSB*\", ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"ea60\", MODE:=\"0666\", GROUP:=\"dialout\", SYMLINK+=\"ydlidar\""
-    "/etc/udev/rules.d/99-ydlidar-V2.rules:KERNEL==\"ttyACM*\", ATTRS{idVendor}==\"0483\", ATTRS{idProduct}==\"5740\", MODE:=\"0666\", GROUP:=\"dialout\", SYMLINK+=\"ydlidar\""
-    "/etc/udev/rules.d/99-ydlidar-2303.rules:KERNEL==\"ttyUSB*\", ATTRS{idVendor}==\"067b\", ATTRS{idProduct}==\"2303\", MODE:=\"0666\", GROUP:=\"dialout\", SYMLINK+=\"ydlidar\""
+declare -A UDEV_RULES=(
+    ["/etc/udev/rules.d/99-ydlidar.rules"]='KERNEL=="ttyUSB*", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE:="0666", GROUP:="dialout", SYMLINK+="ydlidar"'
+    ["/etc/udev/rules.d/99-ydlidar-V2.rules"]='KERNEL=="ttyACM*", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", MODE:="0666", GROUP:="dialout", SYMLINK+="ydlidar"'
+    ["/etc/udev/rules.d/99-ydlidar-2303.rules"]='KERNEL=="ttyUSB*", ATTRS{idVendor}=="067b", ATTRS{idProduct}=="2303", MODE:="0666", GROUP:="dialout", SYMLINK+="ydlidar"'
 )
 
-echo "  -> 写入 udev 规则..."
-for rule in "${UDEV_RULES[@]}"; do
-    FILE="${rule%%:*}"
-    CONTENT="${rule#*:}"
-    echo "$CONTENT" | sudo tee "$FILE" > /dev/null
+log "写入 udev 规则..."
+for file in "${!UDEV_RULES[@]}"; do
+    echo "${UDEV_RULES[$file]}" | sudo tee "$file" > /dev/null
 done
 
-echo "  -> 重载并重启 udev 服务..."
-sudo service udev reload
-sleep 2
-sudo service udev restart
+log "重载 udev 服务..."
+sudo udevadm control --reload-rules && sudo udevadm trigger
 
-CURRENT_USER=$(whoami)
-echo "  -> 将用户 $CURRENT_USER 添加到 dialout 组..."
-sudo usermod -aG dialout "$CURRENT_USER"
+log "将用户 $(whoami) 添加到 dialout 组..."
+sudo usermod -aG dialout "$(whoami)"
 
-echo -e "\e[32m✓ YDLidar udev 规则已设置\e[0m"
-echo ""
+ok "YDLidar udev 规则已设置"
 
-# ============================================================
-# 完成
 # ============================================================
 echo "================================================================"
 echo -e "\e[32m✓ 所有依赖安装完成!\e[0m"
