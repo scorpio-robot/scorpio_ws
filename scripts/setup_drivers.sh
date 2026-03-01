@@ -58,7 +58,7 @@ ok "Sophus 安装完成"
 # ============================================================
 section "2/5" "安装 nanoflann..."
 cmake_install "nanoflann" "$PROGRAMS_DIR/nanoflann" \
-    "git clone https://github.com/jlblancoc/nanoflann.git -b v1.9.0 --depth=1 \"$PROGRAMS_DIR/nanoflann\""
+    "git clone https://github.com/jlblancoc/nanoflann.git -b v1.8.0 --depth=1 \"$PROGRAMS_DIR/nanoflann\""
 ok "nanoflann 安装完成"
 
 # ============================================================
