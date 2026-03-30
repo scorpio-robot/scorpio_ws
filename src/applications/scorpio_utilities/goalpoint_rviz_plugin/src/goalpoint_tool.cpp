@@ -16,7 +16,7 @@ GoalpointTool::GoalpointTool()
 
   topic_property_ = new rviz_common::properties::StringProperty("Topic", "goalpoint", "The topic on which to publish navigation waypionts.",
                                        getPropertyContainer(), SLOT(updateTopic()), this);
-  
+
   qos_profile_property_ = new rviz_common::properties::QosProfileProperty(
     topic_property_, qos_profile_);
 }
@@ -38,7 +38,7 @@ void GoalpointTool::updateTopic()
   rclcpp::Node::SharedPtr raw_node =
     context_->getRosNodeAbstraction().lock()->get_raw_node();
   sub_ = raw_node->template create_subscription<nav_msgs::msg::Odometry>("/state_estimation", 5 ,std::bind(&GoalpointTool::odomHandler,this,std::placeholders::_1));
-  
+
   pub_ = raw_node->template create_publisher<geometry_msgs::msg::PointStamped>("/goal_point", qos_profile_);
   pub_joy_ = raw_node->template create_publisher<sensor_msgs::msg::Joy>("/joy", qos_profile_);
   clock_ = raw_node->get_clock();
@@ -91,5 +91,5 @@ void GoalpointTool::onPoseSet(double x, double y, double theta)
 }
 }
 
-#include <pluginlib/class_list_macros.hpp> 
+#include <pluginlib/class_list_macros.hpp>
 PLUGINLIB_EXPORT_CLASS(goalpoint_rviz_plugin::GoalpointTool, rviz_common::Tool)

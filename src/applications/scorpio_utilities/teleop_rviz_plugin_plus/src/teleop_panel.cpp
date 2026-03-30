@@ -71,7 +71,7 @@ void TeleopPanel::pressButton2()
   if (rclcpp::ok() && velocity_publisher_->get_subscription_count() > 0)
   {
     sensor_msgs::msg::Joy joy;
-    
+
     joy.axes.push_back(0);
     joy.axes.push_back(0);
     joy.axes.push_back(-1.0);
@@ -92,7 +92,7 @@ void TeleopPanel::pressButton2()
     joy.buttons.push_back(0);
     joy.buttons.push_back(0);
     joy.buttons.push_back(0);
-    
+
     joy.header.stamp = node_->now();  // ROS2 uses node_->now() to get the current time
     joy.header.frame_id = "teleop_panel";
     velocity_publisher_->publish(joy);
@@ -129,7 +129,7 @@ void TeleopPanel::pressButton4()
     std_msgs::msg::String msg;
     msg.data = filename;
     save_publisher_->publish(msg);
-  } 
+  }
 }
 
 void TeleopPanel::clickBox1(int val)
