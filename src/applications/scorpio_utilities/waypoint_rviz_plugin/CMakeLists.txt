@@ -10,6 +10,9 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+# Export compile commands for clangd
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 find_package(ament_cmake REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
@@ -48,8 +51,8 @@ include_directories(include)
 
 add_library(${PROJECT_NAME} SHARED ${SRC_FILES} ${HDR_FILES} ${rviz_plugins_moc_files})
 
-ament_target_dependencies(${PROJECT_NAME}
-  PUBLIC
+ament_target_dependencies(
+  ${PROJECT_NAME} PUBLIC
   "geometry_msgs"
   "rclcpp"
   "rviz_common"
@@ -58,7 +61,7 @@ ament_target_dependencies(${PROJECT_NAME}
   "rviz_default_plugins"
   "rviz2"
   "std_msgs"
-  )
+)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   ${Qt5Widgets_INCLUDE_DIRS})
@@ -89,7 +92,7 @@ endif()
 
 install(
   TARGETS ${PROJECT_NAME}
-  EXPORT ${PROJECT_NAME} 
+  EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib/${PROJECT_NAME}
   LIBRARY DESTINATION lib/${PROJECT_NAME}
   RUNTIME DESTINATION lib/${PROJECT_NAME}

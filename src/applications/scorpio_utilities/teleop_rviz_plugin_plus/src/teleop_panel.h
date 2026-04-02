@@ -1,43 +1,48 @@
+// Copyright 2025 Fan Yang
+//
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file or at
+// https://developers.google.com/open-source/licenses/bsd
+
 #ifndef TELEOP_PANEL_H
 #define TELEOP_PANEL_H
 
 #ifndef Q_MOC_RUN
-# include <rclcpp/rclcpp.hpp>
-# include <rviz_common/panel.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <rviz_common/panel.hpp>
 #endif
 
 #include <stdio.h>
 
-#include <QPainter>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QTimer>
-#include <QPushButton>
 #include <QCheckBox>
 #include <QFileDialog>
+#include <QHBoxLayout>
+#include <QPainter>
+#include <QPushButton>
+#include <QTimer>
+#include <QVBoxLayout>
 
-#include <std_msgs/msg/empty.hpp>
-#include <std_msgs/msg/bool.hpp>
-#include <std_msgs/msg/string.hpp>
 #include <sensor_msgs/msg/joy.hpp>
+#include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/empty.hpp>
+#include <std_msgs/msg/string.hpp>
 
 class QLineEdit;
 
-namespace teleop_rviz_plugin_plus
-{
+namespace teleop_rviz_plugin_plus {
 
 class DriveWidget;
 
-class TeleopPanel: public rviz_common::Panel
-{
-Q_OBJECT
+class TeleopPanel : public rviz_common::Panel {
+  Q_OBJECT
 public:
-  TeleopPanel( QWidget* parent = 0 );
-  virtual void load( const rviz_common::Config& config );
-  virtual void save( rviz_common::Config config ) const;
+  TeleopPanel(QWidget *parent = 0);
+  virtual void load(const rviz_common::Config &config);
+  virtual void save(rviz_common::Config config) const;
 
 public Q_SLOTS:
-  void setVel( float linear_velocity_, float angular_velocity_, bool mouse_pressed_ );
+  void setVel(float linear_velocity_, float angular_velocity_,
+              bool mouse_pressed_);
 
 protected Q_SLOTS:
   void pressButton1();
@@ -49,7 +54,7 @@ protected Q_SLOTS:
   void sendVel();
 
 protected:
-  DriveWidget* drive_widget_;
+  DriveWidget *drive_widget_;
 
   // ROS2 uses smart pointers for publishers and subscribers
   rclcpp::Publisher<sensor_msgs::msg::Joy>::SharedPtr velocity_publisher_;
@@ -58,7 +63,6 @@ protected:
   rclcpp::Publisher<std_msgs::msg::Empty>::SharedPtr reset_publisher_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr read_publisher_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr save_publisher_;
-
 
   // Use shared pointer for the node
   rclcpp::Node::SharedPtr node_;
@@ -76,6 +80,6 @@ protected:
   bool mouse_pressed_sent_;
 };
 
-}
+} // namespace teleop_rviz_plugin_plus
 
 #endif // TELEOP_PANEL_H

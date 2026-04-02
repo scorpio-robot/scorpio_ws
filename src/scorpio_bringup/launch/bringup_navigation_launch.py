@@ -156,7 +156,7 @@ def generate_launch_description():
     ld.add_action(declare_use_respawn_cmd)
 
     # Running Map Saver Server
-    # ld.add_action(bringup_hardware_cmd)
+    ld.add_action(bringup_hardware_cmd)
     ld.add_action(bringup_navigation2_cmd)
 
     return ld
