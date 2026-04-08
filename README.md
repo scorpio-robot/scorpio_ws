@@ -10,8 +10,8 @@ scorpio_workspace 是天蝎座机器人的上位机 ROS 工作空间，包含仿
 
 Ubuntu 24.04: [ROS2 Jazzy](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html)
 
-> [!NOTE]
-> 由于使用了 RGLGazeboPlugin 用于仿真 mid360 点云,仿真包仅可运行在带 Nvidia GPU 的电脑
+<!-- > [!NOTE]
+> 由于使用了 RGLGazeboPlugin 用于仿真 mid360 点云,仿真包仅可运行在带 Nvidia GPU 的电脑 -->
 
 ### 2.2 Create Workspace
 
