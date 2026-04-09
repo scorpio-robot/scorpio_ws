@@ -66,12 +66,12 @@ section "3/5" "安装 Intel RealSense SDK 2.0..."
 
 log "注册 RealSense GPG 密钥..."
 sudo mkdir -p /etc/apt/keyrings
-curl -sSf https://librealsense.intel.com/Debian/librealsense.pgp \
-    | sudo tee /etc/apt/keyrings/librealsense.pgp > /dev/null
+curl -sSf https://librealsense.realsenseai.com/Debian/librealsenseai.asc | \
+gpg --dearmor | sudo tee /etc/apt/keyrings/librealsenseai.gpg > /dev/null
 
 log "添加 RealSense 软件源..."
-echo "deb [signed-by=/etc/apt/keyrings/librealsense.pgp] https://librealsense.intel.com/Debian/apt-repo $(lsb_release -cs) main" \
-    | sudo tee /etc/apt/sources.list.d/librealsense.list
+echo "deb [signed-by=/etc/apt/keyrings/librealsenseai.gpg] https://librealsense.realsenseai.com/Debian/apt-repo `lsb_release -cs` main" | \
+sudo tee /etc/apt/sources.list.d/librealsense.list
 sudo apt-get update
 
 log "安装 librealsense2 + ROS2 Wrapper..."
