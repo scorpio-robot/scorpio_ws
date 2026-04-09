@@ -1,3 +1,43 @@
+scorpio_base:
+  ros__parameters:
+    base_frame_id: "base_footprint"
+    odom_frame_id: "odom"
+    stm32_port: "/dev/ttyS0"
+    motor_port: "/dev/ttyS3"
+    stm32_baud: 115200
+    motor_baud: 57600
+    publish_odometry: true
+    odom_topic: "base/odometry"
+    send_transform: false
+    limited_speed: 1.0
+    wheelbase: 0.315
+    use_stamped_vel: True
+
+joy:
+  ros__parameters:
+    deadzone: 0.2
+    autorepeat_rate: 20.0
+
+teleop_twist_joy:
+  ros__parameters:
+    publish_stamped_twist: True
+    frame: base_link
+    axis_linear:  # Left thumb stick vertical
+      x: 1
+    scale_linear:
+      x: 0.7
+    scale_linear_turbo:
+      x: 1.0
+
+    axis_angular:  # Right thumb stick horizontal
+      yaw: 3
+    scale_angular:
+      yaw: 3.0
+
+    require_enable_button: False
+    enable_button: 4  # Left trigger button
+    enable_turbo_button: 5  # Right trigger button
+
 front_d435i:
   ros__parameters:
     camera_name: front
@@ -49,26 +89,6 @@ mid360_driver:
     lidar_publish_time_interval: 0.1
     host_ip: 192.168.1.50
     is_topic_name_with_lidar_ip: false
-
-teleop_twist_joy:
-  ros__parameters:
-    publish_stamped_twist: True
-    frame: base_link
-    axis_linear:  # Left thumb stick vertical
-      x: 1
-    scale_linear:
-      x: 0.7
-    scale_linear_turbo:
-      x: 1.0
-
-    axis_angular:  # Right thumb stick horizontal
-      yaw: 3
-    scale_angular:
-      yaw: 3.0
-
-    require_enable_button: False
-    enable_button: 4  # Left trigger button
-    enable_turbo_button: 5  # Right trigger button
 
 amcl:
   ros__parameters:

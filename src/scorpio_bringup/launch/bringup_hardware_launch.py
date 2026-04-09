@@ -93,10 +93,27 @@ def generate_launch_description():
         }.items(),
     )
 
-    bringup_scorpio_base_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(scorpio_base, "launch", "scorpio_base_launch.py")
-        ),
+    start_scorpio_base_node = Node(
+        package="scorpio_base",
+        executable="scorpio_base_node",
+        name="scorpio_base",
+        output="screen",
+        parameters=[params_file],
+    )
+
+    start_joy_node = Node(
+        package="joy",
+        executable="joy_node",
+        name="joy",
+        parameters=[params_file],
+    )
+
+    # Teleop twist joy node
+    start_teleop_twist_joy_node = Node(
+        package="teleop_twist_joy",
+        executable="teleop_node",
+        name="teleop_twist_joy",
+        parameters=[params_file],
     )
 
     start_realsense_camera_node = Node(
@@ -146,7 +163,9 @@ def generate_launch_description():
 
     # Running Map Saver Server
     ld.add_action(bringup_robot_description_cmd)
-    ld.add_action(bringup_scorpio_base_cmd)
+    ld.add_action(start_scorpio_base_node)
+    ld.add_action(start_joy_node)
+    ld.add_action(start_teleop_twist_joy_node)
     ld.add_action(start_realsense_camera_node)
     ld.add_action(start_ydlidar_driver_node)
     ld.add_action(start_mid360_driver_node)
