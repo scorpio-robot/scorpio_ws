@@ -29,12 +29,12 @@ repositories:
     url: https://github.com/scorpio-robot/scorpio_description.git
     version: main
 
-  # applications/scorpio_simulator:
-  #   type: git
-  #   url: https://github.com/scorpio-robot/scorpio_simulator.git
-  #   version: main
-
-  applications/scorpio_navigation:
+  applications/scorpio_simulator:
     type: git
-    url: https://github.com/scorpio-robot/scorpio_navigation.git
+    url: https://github.com/scorpio-robot/scorpio_simulator.git
+    version: main
+
+  applications/scorpio_navigation2:
+    type: git
+    url: https://github.com/scorpio-robot/scorpio_navigation2.git
     version: main
