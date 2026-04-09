@@ -18,8 +18,8 @@ Ubuntu 24.04: [ROS2 Jazzy](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Ins
 ### 2.2.1 Clone
 
 ```sh
-pip3 install vcs2l
-pip3 install xmacro
+pip3 install vcs2l --break-system-packages
+pip3 install xmacro --break-system-packages
 ```
 
 克隆工作空间仓库并进入目录
