@@ -28,7 +28,6 @@ def generate_launch_description():
     # Get the launch directory
     bringup_dir = get_package_share_directory("scorpio_bringup")
     scorpio_description = get_package_share_directory("scorpio_description")
-    scorpio_base = get_package_share_directory("scorpio_base")
 
     # Create the launch configuration variables
     namespace = LaunchConfiguration("namespace")
@@ -105,14 +104,15 @@ def generate_launch_description():
         package="joy",
         executable="joy_node",
         name="joy",
+        output="screen",
         parameters=[params_file],
     )
 
-    # Teleop twist joy node
-    start_teleop_twist_joy_node = Node(
-        package="teleop_twist_joy",
-        executable="teleop_node",
-        name="teleop_twist_joy",
+    start_teleop_node = Node(
+        package="smarter_joystick_teleop",
+        executable="smarter_joystick_teleop_node",
+        name="smarter_joystick_teleop",
+        output="screen",
         parameters=[params_file],
     )
 
@@ -165,7 +165,7 @@ def generate_launch_description():
     ld.add_action(bringup_robot_description_cmd)
     ld.add_action(start_scorpio_base_node)
     ld.add_action(start_joy_node)
-    ld.add_action(start_teleop_twist_joy_node)
+    ld.add_action(start_teleop_node)
     ld.add_action(start_realsense_camera_node)
     ld.add_action(start_ydlidar_driver_node)
     ld.add_action(start_mid360_driver_node)

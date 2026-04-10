@@ -15,6 +15,7 @@
   <exec_depend>scorpio_base</exec_depend>
 	<exec_depend>scorpio_description</exec_depend>
   <exec_depend>scorpio_nav2_bringup</exec_depend>
+  <exec_depend>smarter_joystick_teleop</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_cmake_black</test_depend>

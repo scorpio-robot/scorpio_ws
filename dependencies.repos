@@ -38,3 +38,8 @@ repositories:
     type: git
     url: https://github.com/scorpio-robot/scorpio_navigation2.git
     version: main
+
+  scorpio_utilities/smarter_joystick_teleop:
+    type: git
+    url: https://github.com/scorpio-robot/smarter_joystick_teleop.git
+    version: main
