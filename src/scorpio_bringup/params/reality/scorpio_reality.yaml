@@ -41,8 +41,8 @@ smarter_joystick_teleop:
     assisted_heading_deadzone: 0.15
     assisted_goal_period_sec: 0.25
 
-    joy_timeout_sec: 1.0
-    watchdog_period_sec: 0.1
+    joy_timeout_sec: 0.1
+    watchdog_period_sec: 0.05
 
 front_d435i:
   ros__parameters:
